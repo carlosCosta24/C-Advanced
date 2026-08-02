@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Advanced_Topics.Events.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,10 +28,12 @@ namespace Advanced_Topics
 
         }
 
-        private void ctrlCalculator1_OnCalculate(int obj)
+
+
+        private void ctrlCalculator1_OnCalculateCompletion(object sender, ctrlCalculator.CalculatCompletion e)
         {
-            int Result = obj;
-            MessageBox.Show("Calculation Complet!, Result = " + Result.ToString());
+            MessageBox.Show($"Calculation Complet!, Result: {e.Result}, Value one: {e.FirstValue}, Value Two: {e.SecondValue} ");
+
         }
     }
 }

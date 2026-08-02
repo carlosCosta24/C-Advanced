@@ -51,7 +51,7 @@
             this.ctrlCalculator1.Name = "ctrlCalculator1";
             this.ctrlCalculator1.Size = new System.Drawing.Size(568, 141);
             this.ctrlCalculator1.TabIndex = 2;
-            this.ctrlCalculator1.OnCalculate += new System.Action<int>(this.ctrlCalculator1_OnCalculate);
+            this.ctrlCalculator1.OnCalculateCompletion += new System.EventHandler<Advanced_Topics.Events.Controls.ctrlCalculator.CalculatCompletion>(this.ctrlCalculator1_OnCalculateCompletion);
             // 
             // Form1
             // 

@@ -13,14 +13,43 @@ namespace Advanced_Topics.Events.Controls
     public partial class ctrlCalculator : UserControl
     {
         public event Action<int> OnCalculate;
-        protected virtual void CalculationComplet(int Result)
+        //protected virtual void CalculationComplet(int Result)
+        //{
+        //    Action<int> Handeler = OnCalculate;
+        //    if(Handeler != null)
+        //    {
+        //        Handeler(Result);
+        //    }
+        //}
+        // define a an event class 
+        public class CalculatCompletion : EventArgs
         {
-            Action<int> Handeler = OnCalculate;
-            if(Handeler != null)
+            public int FirstValue { get; }
+            public int SecondValue { get; }
+            public int Result { get; }
+
+            public CalculatCompletion(int firstValue, int secondValue, int result)
             {
-                Handeler(Result);
+                this.FirstValue = firstValue;
+                this.SecondValue = secondValue;
+                this.Result = result;
             }
         }
+        //declare the event Handler 
+        public event EventHandler<CalculatCompletion> OnCalculateCompletion;
+        
+        //declare the action 
+        protected virtual void AfterCalculatCompletion(CalculatCompletion e)
+        {
+            OnCalculateCompletion?.Invoke(this, e);
+        }
+        // declare constructing function
+        public void RaisOnCalculatCompletion(int FirstValue, int SecondValue, int Result)
+        {
+            AfterCalculatCompletion(new CalculatCompletion(FirstValue, SecondValue, Result));
+        }
+
+
         public ctrlCalculator()
         {
             InitializeComponent();
@@ -43,11 +72,14 @@ namespace Advanced_Topics.Events.Controls
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-            int CalculationResult = int.Parse(tbFirstNumber.Text) + int.Parse(tbSecondNumber.Text);
-            lbResult.Text = CalculationResult.ToString();
-            if(OnCalculate  != null)
+           int FirstNumber = int.Parse(tbFirstNumber.Text);
+           int SecondNumber = int.Parse(tbSecondNumber.Text);
+           int Result = FirstNumber + SecondNumber;
+
+           lbResult.Text = Result.ToString();
+            if(OnCalculateCompletion != null)
             {
-                OnCalculate(CalculationResult);
+                RaisOnCalculatCompletion(FirstNumber,SecondNumber,Result);
             }
         }
     }
