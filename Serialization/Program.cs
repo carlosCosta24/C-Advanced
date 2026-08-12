@@ -1,54 +1,48 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
+using System.Xml.Serialization;
 
 [Serializable]
-public class Person 
+public class Person
 {
     public int ID { get; set; }
     public string Name { get; set; }
-    public int?Age { get; set; }
+    public int? Age { get; set; }
 
-    static public void Serialize(string Type, Person Obj) 
+}
+public class Serialization
+{
+    public enum enType { Bin = 0, Json = 1, Xml = 2 }
+    public static string Serialize(Person Obj, enType Type)
     {
+        string FileName;
 
-        switch (Type) 
+        switch (Type)
         {
-            case "Bin":
+            case enType.Bin:
                 //Serialize to binary
                 BinaryFormatter Formatter = new BinaryFormatter();
                 using (FileStream Stream = new FileStream($"{Obj.Name}.bin", FileMode.Create))
                 {
                     Formatter.Serialize(Stream, Obj);
                 }
-                //deserialize
-                using (FileStream Stream = new FileStream($"{Obj.Name}.bin", FileMode.Open))
-                {
-                    Person Deserialized = (Person)Formatter.Deserialize(Stream);
-                    Console.WriteLine($"ID: {Deserialized.ID}, Name: {Deserialized.Name}, Age: {Deserialized.Age}");
-                    Console.ReadKey();
-                }
-                break;
-            case "Xml":
+                return FileName = Path.GetFileName($"{Obj.Name}.bin");
+
+                
+            case enType.Xml:
                 //serialize to xml
                 XmlSerializer Serializer = new XmlSerializer(typeof(Person));
                 using (TextWriter Writer = new StreamWriter($"{Obj.Name}.xml"))
                 {
                     Serializer.Serialize(Writer, Obj);
                 }
+                    return FileName = Path.GetFileName($"{Obj.Name}.xml");
 
-                //deserialize 
-                using (TextReader Reader = new StreamReader($"{Obj.Name}.xml"))
-                {
-                    Person Deserialized = (Person)Serializer.Deserialize(Reader);
-                    Console.WriteLine($"ID: {Deserialized.ID}, Name: {Deserialized.Name}, Age: {Deserialized.Age}");
-                    Console.ReadKey();
-                }
-                break;
-            case "Json":
+            case enType.Json:
                 //serialize to JSON
                 DataContractJsonSerializer JSONSerializer = new DataContractJsonSerializer(typeof(Person));
                 using (MemoryStream stream = new MemoryStream())
@@ -57,22 +51,60 @@ public class Person
                     string JsonString = System.Text.Encoding.UTF8.GetString(stream.ToArray());
                     File.WriteAllText($"{Obj.Name}.json", JsonString);
                 }
-                //Deserialize 
-                using (FileStream Stream = new FileStream($"{Obj.Name}.json", FileMode.Open))
-                {
-                    Person Deserialized = (Person)JSONSerializer.ReadObject(Stream);
-                    Console.WriteLine($"ID: {Deserialized.ID}, Name: {Deserialized.Name}, Age: {Deserialized.Age}");
-                    Console.ReadKey();
-                }
-                break;
+                    return FileName = Path.GetFileName($"{Obj.Name}.json");
+
+
+                
             default:
-                Console.WriteLine("Not valid Type!!");
-                return;
+                return "Error, No file serialization";
+
+
 
 
         }
-    
-    } 
+
+    }
+    public static Person Deserialize(string File, enType Type)
+    {
+        switch (Type)
+        {
+            case enType.Bin:
+                BinaryFormatter Formatter = new BinaryFormatter();
+                using (FileStream Stream = new FileStream(File, FileMode.Open))
+                {
+                    Person Deserialized = (Person)Formatter.Deserialize(Stream);
+                    return Deserialized;
+                }
+                
+            case enType.Xml:
+                XmlSerializer Serializer = new XmlSerializer(typeof(Person));
+                using (TextReader Reader = new StreamReader(File))
+                {
+                    Person Deserialized = (Person)Serializer.Deserialize(Reader);
+                    return Deserialized;
+                }
+                
+            case enType.Json:
+                DataContractJsonSerializer JSONSerializer = new DataContractJsonSerializer(typeof(Person));
+                using (FileStream Stream = new FileStream(File, FileMode.Open))
+                {
+                    Person Deserialized = (Person)JSONSerializer.ReadObject(Stream);
+                    return Deserialized;
+                }
+                
+            default:
+                return null;
+
+        }
+    }
+
+}
+public class Printer 
+{
+    public static void Print(Person Obj)
+    {
+        Console.WriteLine($"ID: {Obj.ID}, Name: {Obj.Name}, Age: {Obj.Age}");
+    }
 
 }
 
@@ -80,13 +112,22 @@ class Program
 {
     static void Main()
     {
-        Person Carlos = new Person { ID = 1, Name = "Carlos",Age =  28 };
-        Person Koda = new Person { ID = 2, Name = "Koda", Age = 2 }; 
-        Person Ricardo = new Person { ID = 1, Name = "Ricardo", Age = 48 };
+        Person Carlos = new Person { ID = 1, Name = "Carlos", Age = 28 };
+        Person Koda = new Person { ID = 2, Name = "Koda", Age = 2 };
+        Person Ricardo = new Person { ID = 3, Name = "Ricardo", Age = 48 };
 
-        Person.Serialize("Bin", Carlos);
-        Person.Serialize("Xml", Koda);
-        Person.Serialize("Json", Ricardo);
+
+
+       Console.WriteLine(Serialization.Serialize(Carlos, Serialization.enType.Bin));
+       Console.WriteLine(Serialization.Serialize(Koda, Serialization.enType.Xml));
+       Console.WriteLine(Serialization.Serialize(Ricardo, Serialization.enType.Json));
+
+        Printer.Print(Serialization.Deserialize("Carlos.bin", Serialization.enType.Bin));
+        Printer.Print(Serialization.Deserialize("Koda.xml", Serialization.enType.Xml));
+        Printer.Print(Serialization.Deserialize("Ricardo.json", Serialization.enType.Json));
+
+        Console.ReadKey();
+
 
 
 
