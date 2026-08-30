@@ -11,7 +11,8 @@ namespace Reflection
     {
         static void Main(string[] args)
         {
-            clsType.PrintStringType();
+            //clsType.PrintStringType();
+            clsStringNavigation.NavigateStringLibirary();
         }
     }
 }
