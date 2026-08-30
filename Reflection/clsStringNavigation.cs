@@ -7,7 +7,7 @@ namespace Reflection
     public class clsStringNavigation
     {
 
-        public static void NavigateStringLibirary()
+        public static void NavigateStringLibrary()
         {
             Assembly StringAssembly = typeof(string).Assembly;
 
