@@ -3,6 +3,9 @@ using Reflection;
 
 namespace Reflection
 {
+/// <summary>
+/// Validation class using reflection 
+/// </summary>
     public class clsValidation
     {
 
@@ -22,10 +25,19 @@ namespace Reflection
             }
         
         }
+        /// <summary>
+        /// Person Class with custom attribute for age range 
+        /// </summary>
         public class Person 
         {
             [Age(20,60,"Age Should Be Between 20 And 60")]
+            /// <summary>
+            /// Get and set person age
+            /// </summary>
             public int Age { get; set; }
+            /// <summary>
+            /// Get and set person name
+            /// </summary>
             public string Name { get; set; }
             public Person(int age, string name) 
             {
@@ -37,7 +49,12 @@ namespace Reflection
         public class clsChecker
         {
             
-
+        /// <summary>
+        /// Impelmentation of validation for person age
+        /// Obj should be insialized before 
+        /// passing as a parameter to this function
+        /// </summary>
+        /// <param name="Obj">class person</param>
             public static void CheckPersonAge(Person Obj) 
             {
                 if (ValidatePersonAge(Obj))
@@ -50,7 +67,16 @@ namespace Reflection
                 }
                 Console.ReadKey();
             }
-
+            /// <summary>
+            /// Using reflection to loop over the properties of class person 
+            /// using type to start reflection 
+            /// loop over properties check if its defined
+            /// get attribute and value
+            /// check if they satisfy the condition 
+            /// return true or false 
+            /// </summary>
+            /// <param name="Person"></param>
+            /// <returns></returns>
             static bool ValidatePersonAge(Person Person) 
             {
                 Type type = typeof(Person);
