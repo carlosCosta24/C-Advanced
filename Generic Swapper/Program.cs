@@ -24,6 +24,15 @@ namespace Generic_Swapper
             clsUtility.Swapper(ref FirstName, ref SecondName);
             Console.WriteLine($"FirstName and SecondName after swap: FirstName: {FirstName}, SecondName: {SecondName}");
 
+            //Using Generic class on int
+            clsGeneric.Box<int> Int= new clsGeneric.Box<int>(10);
+            Console.WriteLine($"Using generic class with int:");
+            Int.Print();
+
+            //Using Generic class on string
+            clsGeneric.Box<string> String = new clsGeneric.Box<string>("Carlos Costa");
+            Console.WriteLine($"Using generic class with string:");
+            String.Print();
 
             Console.ReadKey();
 
