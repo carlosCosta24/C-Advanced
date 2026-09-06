@@ -64,6 +64,43 @@ namespace ConsoleApp1
                     Console.ReadKey();
 
         }
-        
+        public static void DeleteKey(string Path, string Key )
+        {
+            
+            try
+            {
+                using (RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry64))
+                {
+                    using (RegistryKey SubKey = baseKey.OpenSubKey(Path, true))
+                    {
+                        if (SubKey != null)
+                        {
+                            
+                            SubKey.DeleteValue(Key);
+                            Console.WriteLine($"Value {Key} was deleted successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Value doesn't exist.");
+
+                        }
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException) 
+            {
+                Console.WriteLine("Unauthorized Access Exception!");
+            }catch(Exception Errro)
+            {
+                Console.WriteLine($"Error: {Errro.Message}");
+            }
+            Console.ReadKey();
+        }
+        public void PrintProperties()
+        {
+            Console.WriteLine($"{this.Path}, {this.Value}, {this.Data}");
+
+        }
+
     }
 }

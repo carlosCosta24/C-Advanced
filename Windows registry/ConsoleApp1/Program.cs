@@ -11,14 +11,20 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             
-            clsAccessRegistry NewRegistry = new clsAccessRegistry(@"HKEY_CURRENT_USER\SOFTWARE\HIDDEN","PraivateKe", "CARLOS COSTA");
+            clsAccessRegistry NewRegistry = new clsAccessRegistry(@"HKEY_CURRENT_USER\SOFTWARE\HIDDEN","PraivateKey", "CARLOS COSTA");
             //NewRegistry.AddNewRegistry();
             //NewRegistry.ReadRegistry();
 
             //Write to local machine 
 
-            clsAccessRegistry LocalMachine = new clsAccessRegistry(@"HKEY_LOCAL_MACHINE\SOFTWARE\LocalAccess", "HighPrivileges", "Admine access");\
-            LocalMachine.AddNewRegistry();
+            //clsAccessRegistry LocalMachine = new clsAccessRegistry(@"HKEY_LOCAL_MACHINE\SOFTWARE\LocalAccess", "HighPrivileges", "Admine access");
+            //LocalMachine.AddNewRegistry();
+
+            //Delete NewRegisty
+
+            
+
+            clsAccessRegistry.DeleteKey(@"SOFTWARE\\HIDDEN", "PraivateKey");
 
         }
     }
