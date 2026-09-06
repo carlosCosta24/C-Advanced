@@ -11,8 +11,10 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             
-            clsWriteToRegistry AddNewRegistry = new clsWriteToRegistry(@"HKEY_CURRENT_USER\SOFTWARE\HIDDEN","PraivateKey", "CARLOS COSTA");
-            AddNewRegistry.AddNewRegistry();
+            clsAccessRegistry NewRegistry = new clsAccessRegistry(@"HKEY_CURRENT_USER\SOFTWARE\HIDDEN","PraivateKe", "CARLOS COSTA");
+            //NewRegistry.AddNewRegistry();
+            NewRegistry.ReadRegistry();
+
         }
     }
 }
