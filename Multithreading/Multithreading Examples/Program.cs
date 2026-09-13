@@ -11,9 +11,12 @@ namespace Multithreading_Examples
     {
         static void Main(string[] args)
         {
-            Thread t = new Thread(NewThread);
+            //Prameterless thread
+            Thread FirstThread = new Thread(NewThread);
 
-            t.Start();
+            FirstThread.Start();
+            //Parameterized Thread
+
             for (int i = 0; i < 100; i++) 
             {
                 if (i % 10 == 0) 
@@ -23,13 +26,21 @@ namespace Multithreading_Examples
                 }
             }
 
+            Thread SecondThread = new Thread(() => Print("Costa"));
+            SecondThread.Start();
+
             void NewThread() 
             {
                 for(int i = 0; i < 10; i ++)
                 { 
-                    Console.WriteLine("Calos");
+                    Console.WriteLine("Carlos");
                     Thread.Sleep(500);
                 }
+            }
+            
+            void Print(string s) 
+            {
+                Console.WriteLine(s);
             }
             Console.ReadKey();
         }
