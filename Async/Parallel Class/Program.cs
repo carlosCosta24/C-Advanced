@@ -28,6 +28,10 @@ namespace Parallel_Class
             //parallel for each
             Parallel.ForEach(Urls, url => { DownloadWebPage(url);});
 
+            //parallel invoke
+
+            Parallel.Invoke(Sum, Factorial);
+
             Console.ReadKey();
         }
         static void DownloadWebPage(string Url) 
@@ -38,6 +42,25 @@ namespace Parallel_Class
                 Console.WriteLine($"{Url} char count is: {Content.Length}");
             }
             
+        }
+        static void Sum()
+        {
+            int Sum = 0;
+            for (int i = 0; i < 100000; i++)
+            {
+                Sum += i;
+            }
+            Console.WriteLine($"Sum from 1 to 99999 is : {Sum}");
+        }
+
+        static void Factorial()
+        {
+            int Factorial = 1;
+            for (int i = 10; i > 1; i--)
+            {
+                Factorial *= i;
+            }
+            Console.WriteLine($"Factorial 10 is : {Factorial}");
         }
     }
 }
